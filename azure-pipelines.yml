@@ -1,0 +1,34 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- main
+
+pool:
+  name: self-hosted-pool
+
+container: maven:3.9.11-eclipse-temurin-17-noble
+steps:
+- script: mvn clean package
+  displayName: 'Build com maven'
+
+- task: Maven@4
+  inputs:
+    azureSubscription: '2025 2TDSB RM554424 Lucas Kenji Kikuchi(91d53c89-301c-463a-944e-15d9be7b01f5)'
+    mavenPomFile: 'pom.xml'
+    goals: 'clean package'
+    publishJUnitResults: true
+    testResultsFiles: '**/surefire-reports/TEST-*.xml'
+    #javaHomeOption: 'JDKVersion'
+    #jdkVersionOption: '1.17'
+    mavenVersionOption: 'Default'
+    mavenAuthenticateFeed: false
+    effectivePomSkip: false
+    #sonarQubeRunAnalysis: true
+    sqMavenPluginVersionChoice: 'latest'
+    checkStyleRunAnalysis: true
+    pmdRunAnalysis: true
+    findBugsRunAnalysis: true
+    spotBugsRunAnalysis: true
